@@ -1,0 +1,87 @@
+<div flex layout="row">
+    <div flex="10"></div>
+
+    <div flex layout="column" >
+        <div  layout="row">
+
+            <md-input-container>
+                <label>Topic</label>
+                <md-select ng-model="vm.selectedTopic" md-on-close="vm.topicChanged()">
+                    <md-option ng-repeat="topic in vm.topics" value="{{topic.id}}">
+                        {{topic.id+1}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+
+            <md-input-container>
+                <label>Num Words</label>
+                <input required type="number" step="any" ng-model="vm.numberOfWords" min="5"
+                       max="30" ng-change="vm.updatePage()"/>
+
+            </md-input-container>
+
+
+        </div>
+
+        <div  layout="column" ng-show="vm.topic">
+            <div>
+                <h2>Topic# {{vm.topic.id+1}} {{vm.topic.name}} </h2>
+            </div>
+
+            <div>
+                <p class="lead">{{vm.topic.description}}</p>
+            </div>
+        </div>
+
+        <div  layout="column" ng-if="vm.data_ready">
+
+            <div >
+                <jqcloud words="vm.topic.counts" id="cloud-dynamic" auto-resize="true" steps="10"
+                         font-size="{from:0.09, to:0.04}"></jqcloud>
+            </div>
+
+            <div >
+                <nvd3 options="vm.chart_options" data="vm.chart_data"></nvd3>
+
+            </div>
+            <div layout="column" >
+                <div >
+                    <h2> Top Docs</h2>
+
+                </div>
+
+                <div >
+
+
+                    <ul>
+                        <li dir-paginate="item in vm.strongest_docs | itemsPerPage: 5">
+
+
+                            <a ng-href="{{item.url}}">{{ item.title }}</a>
+
+
+                        </li>
+                    </ul>
+
+
+                    <dir-pagination-controls></dir-pagination-controls>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+    <div flex="10"></div>
+
+</div>
+
